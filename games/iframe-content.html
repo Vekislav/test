@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Game</title>
+</head>
+<body>
+    <h1>Game</h1>
+
+    <script>
+        let currentBalance = 1000; // Default balance for the iframe
+
+        // Function to update the iframe's balance and send it to the main page
+        function updateBalance() {
+            // Send the iframe's balance to the parent (main page) every 3 seconds
+            window.parent.postMessage({ type: "updateBalance", balance: currentBalance }, "*");
+        }
+
+        // Simulate balance changes (replace with actual game logic)
+        setInterval(() => {
+            currentBalance += Math.random() * 10 - 5; // Random balance change
+            updateBalance(); // Send the updated balance to the main page
+        }, 3000); // Every 3 seconds
+
+        // Read the initial balance from localStorage (i.e., "BLC")
+        const initialBalance = localStorage.getItem("BLC");
+        if (initialBalance !== null) {
+            currentBalance = parseFloat(initialBalance); // Update balance with the stored value
+        }
+
+        // Continuously check the balance from the parent (main page) every 3 seconds
+        setInterval(() => {
+            const parentBalance = localStorage.getItem("BLC");
+            if (parentBalance !== null && !isNaN(parentBalance)) {
+                currentBalance = parseFloat(parentBalance); // Sync balance from parent
+            }
+        }, 3000); // Every 3 seconds
+    </script>
+</body>
+</html>

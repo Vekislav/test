@@ -1,0 +1,120 @@
+/* General Styles */
+html, body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #ffffff;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Upbar */
+.upbar {
+    width: 99%;
+    background-color: #1f1f1f;
+    color: #ffffff;
+    padding: 0px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container {
+    padding: 5px;
+    padding-left: 25px;
+}
+
+.site-logo {
+    width: 50px;
+    height: 50px;
+}
+
+#balance {
+    padding-right: 650px;
+    font-size: 25px;
+    color: #fff;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 50px;
+    width: 200px;
+    background-color: #1f1f1f;
+    padding: 10px;
+    border-right: 1px solid #333;
+    height: calc(100vh - 50px);
+    transition: width 0.4s ease, padding 0.4s ease;
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: 50px;
+    padding: 10px 5px;
+}
+
+#toggle-sidebar {
+    background-color: #333;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Content Area */
+.content {
+    margin-left: 200px;
+    padding: 20px;
+    width: calc(100% - 220px);
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 95px);
+    overflow: hidden;
+    transition: margin-left 0.4s ease, justify-content 0.4s ease;
+}
+
+/* When Sidebar is Collapsed */
+.sidebar.collapsed ~ .content {
+    margin-left: 100px;
+}
+
+/* Centered iframe container */
+.iframe-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Iframe Styling */
+.game-iframe {
+    width: 900px; /* Set the iframe width */
+    height: 550px; /* Set the iframe height */
+    border-radius: 12px;
+    border: 3px solid #B58B00;
+    transition: transform 0.3s ease-in-out;
+}
+
+.game-iframe:hover {
+    transform: scale(1.05);
+}
+
+/* Sidebar Toggle Animations */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .sidebar.collapsed {
+        display: block;
+    }
+}

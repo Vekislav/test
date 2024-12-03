@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Main</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Upbar -->
+    <div class="upbar">
+        <div class="logo-container" onclick="window.location.href='#'">
+            <img src="logo.png" alt="Site Logo" class="site-logo">
+        </div>
+        <div id="balance" class="balance-center">Balance: $<span id="balance-amount">0</span></div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <button id="toggle-sidebar">-</button>
+            <div id="sidebar-content">
+                <h2>Top Games</h2>
+                <div class="game" onclick="loadIframe('https://vekislav.github.io/casino/crash/')">
+                    <img src="game1.png" alt="Crash Game Logo" class="game-logo">
+                    <span class="game-text">Crash Game</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="iframe-container">
+                <iframe 
+                    src="https://vekislav.github.io/casino/crash/" 
+                    id="iframe" 
+                    class="game-iframe" 
+                    title="Game"
+                    allow="same-origin">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Sidebar toggle logic
+        document.getElementById("toggle-sidebar").addEventListener("click", () => {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("collapsed");
+        });
+
+        // Load new iframe content
+        function loadIframe(url) {
+            const iframe = document.getElementById("iframe");
+            iframe.src = url;
+        }
+
+        // Listen for messages from the iframe
+        window.addEventListener("message", (event) => {
+            if (event.data && event.data.type === "updateBalance") {
+                const iframeBalance = event.data.balance;
+                if (typeof iframeBalance === "number" && !isNaN(iframeBalance)) {
+                    localStorage.setItem("BLC", iframeBalance); // Save the balance from iframe to "BLC"
+                } else {
+                    console.error("Received invalid balance from iframe:", iframeBalance);
+                }
+            }
+        });
+
+        // Periodically check and update balance
+        setInterval(() => {
+            const iframeBalance = localStorage.getItem("BLC");
+            if (iframeBalance !== null && !isNaN(iframeBalance)) {
+                document.getElementById("balance-amount").innerText = parseFloat(iframeBalance).toFixed(2);
+            }
+        }, 3000); // Every 3 seconds
+
+        // Fetch the initial balance from "BLC" on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            const initialBalance = localStorage.getItem("BLC");
+            const validInitialBalance = parseFloat(initialBalance);
+
+            // If "BLC" is a valid number, display it, otherwise default to 0
+            if (!isNaN(validInitialBalance)) {
+                document.getElementById("balance-amount").innerText = validInitialBalance.toFixed(2);
+            } else {
+                document.getElementById("balance-amount").innerText = "0.00";
+            }
+        });
+    </script>
+</body>
+</html>
